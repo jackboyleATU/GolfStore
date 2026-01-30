@@ -1,0 +1,56 @@
+﻿@page
+@model GolfStore_L00181486.Pages.Admins.Clubs.IndexModel
+@{
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h3>Clubs</h3>
+        </div>
+        <div class="col-6">
+            <a asp-page="Create" class="btn btn-primary">
+                Create New Club
+            </a>
+        </div>
+    </div>
+</div>
+
+<br /><br /><br />
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Brand</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Forgiveness</th>
+            <th>Stock</th>
+            <th>Club Type</th>
+            <th>Image</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Model.Clubs)
+        {
+            <tr>
+                <td>@obj.Brand?.Name</td>
+                <td>@obj.Name</td>
+                <td>@obj.Price</td>
+                <td>@obj.Forgiveness</td>
+                <td>@obj.Stock</td>
+                <td>@obj.Clubtype?.Type</td>
+                <td>
+                    <img src="@obj.ImgUrl" alt="@obj.Name" width="50" />
+                </td>
+                <td>
+                    <div class="btn-group" role="group">
+                        <a asp-page="Edit" asp-route-id="@obj.ClubId" class="btn btn-primary">Edit</a>
+                        <a asp-page="Delete" asp-route-id="@obj.ClubId" class="btn btn-danger">Delete</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

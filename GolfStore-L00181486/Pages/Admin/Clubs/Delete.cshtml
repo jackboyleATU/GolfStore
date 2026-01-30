@@ -1,0 +1,69 @@
+﻿@page
+@model GolfStore_L00181486.Pages.Admins.Clubs.DeleteModel
+@{
+}
+<form method="post">
+    <input hidden asp-for="Club.ClubId" />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary pl-3">Delete Club</h2>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Club.Name"></label>
+            <input asp-for="Club.Name" class="form-control" readonly />
+            <span asp-validation-for="Club.Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Club.Price"></label>
+            <input asp-for="Club.Price" class="form-control" readonly />
+            <span asp-validation-for="Club.Price" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Club.Forgiveness">Forgiveness</label>
+            <select asp-for="Club.Forgiveness" class="form-select" asp-items="@(Html.GetEnumSelectList<GolfStore.Models.Models.Club.ForgivenessLevel>())" disabled>
+                <option disabled selected> --Select Forgiveness-- </option>
+            </select>
+            <input type="hidden" asp-for="Club.Forgiveness" />
+            <span asp-validation-for="Club.Forgiveness" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Club.Stock">Stock</label>
+            <input asp-for="Club.Stock" type="number" class="form-control" readonly />
+            <span asp-validation-for="Club.Stock" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Club.TypeId">Club Type</label>
+            <select asp-for="Club.TypeId" asp-items="@(Model.ClubTypeList)" class="form-select" disabled>
+                <option disabled selected> --Select Club Type-- </option>
+            </select>
+            <input type="hidden" asp-for="Club.TypeId" />
+            <span asp-validation-for="Club.TypeId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Club.BrandId">Brand</label>
+            <select asp-for="Club.BrandId" asp-items="@(Model.brandSelect)" class="form-select" disabled>
+                <option disabled selected> --Select Brand-- </option>
+            </select>
+            <input type="hidden" asp-for="Club.BrandId" />
+            <span asp-validation-for="Club.BrandId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Club.ImgUrl">Image URL</label>
+            <input asp-for="Club.ImgUrl" class="form-control" readonly />
+            <span asp-validation-for="Club.ImgUrl" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-page="Index" class="btn btn-secondary">Back to Index</a>
+    </div>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

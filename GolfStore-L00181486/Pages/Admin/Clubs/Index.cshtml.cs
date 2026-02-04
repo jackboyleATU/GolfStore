@@ -1,4 +1,5 @@
 using GolfStore.DataAccess.DataAccess;
+using GolfStore.DataAccess.Repositorys;
 using GolfStore.Models.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -8,21 +9,18 @@ namespace GolfStore_L00181486.Pages.Admins.Clubs
 {
     public class IndexModel : PageModel
     {
-        private readonly AppDBContext _dbContext;
+        private readonly IClubRepo _clubRepo;
         public IEnumerable<Club> Clubs { get; set; }
 
-        public IndexModel(AppDBContext dbContext)
+        public IndexModel(IClubRepo clubRepo)
         {
-            _dbContext = dbContext;
+            _clubRepo = clubRepo;
 
         }
 
         public void OnGet()
         {
-            Clubs = _dbContext.Clubs
-                .Include(c => c.Brand)
-                .Include(c => c.Clubtype)
-                .ToList();
+            Clubs = _clubRepo.GetAll(includeProperties: "Brand,Clubtype");
         }
     }
 }

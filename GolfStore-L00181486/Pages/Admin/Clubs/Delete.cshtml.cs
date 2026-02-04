@@ -1,4 +1,5 @@
 using GolfStore.DataAccess.DataAccess;
+using GolfStore.DataAccess.Repositorys;
 using GolfStore.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,40 +11,44 @@ namespace GolfStore_L00181486.Pages.Admins.Clubs
 {
     public class DeleteModel : PageModel
     {
-        private readonly AppDBContext _dbContext;
+        private readonly IClubRepo _clubRepo;
+        private readonly IBrandRepo _brandRepo;
+        private readonly IClubtypeRepo _clubtypeRepo;
 
         public SelectList brandSelect { get; set; }
         public SelectList ClubTypeList { get; set; }
 
-        public DeleteModel(AppDBContext dbContext)
+        public DeleteModel(IClubRepo clubRepo, IBrandRepo brandRepo, IClubtypeRepo clubtypeRepo)
         {
-            _dbContext = dbContext;
+            _clubRepo = clubRepo;
+            _brandRepo = brandRepo;
+            _clubtypeRepo = clubtypeRepo;
         }
 
         public Club Club { get; set; }
         public void OnGet(int id)
         {
-            brandSelect = new SelectList(_dbContext.Brands.AsNoTracking().ToList(), "BrandId", "Name");
-            ClubTypeList = new SelectList(_dbContext.Clubtypes.AsNoTracking().ToList(), "TypeId", "Type");
+            brandSelect = new SelectList(_brandRepo.GetAll(), "BrandId", "Name");
+            ClubTypeList = new SelectList(_clubtypeRepo.GetAll(), "TypeId", "Type");
 
-            Club = _dbContext.Clubs.Find(id);
+            Club = _clubRepo.Get(id);
         }
 
-        public async Task<IActionResult> OnPost(Club club)
+        public IActionResult OnPost(Club club)
         {
             if (!ModelState.IsValid)
             {
                 // Repopulate the selects before re-rendering the page
-                brandSelect = new SelectList(await _dbContext.Brands.AsNoTracking().ToListAsync(), "BrandId", "Name");
-                ClubTypeList = new SelectList(await _dbContext.Clubtypes.AsNoTracking().ToListAsync(), "TypeId", "Type");
+                brandSelect = new SelectList(_brandRepo.GetAll(), "BrandId", "Name");
+                ClubTypeList = new SelectList(_clubtypeRepo.GetAll(), "TypeId", "Type");
 
                 return Page();
             }
 
             if (ModelState.IsValid)
             {
-                _dbContext.Clubs.Remove(club);
-                await _dbContext.SaveChangesAsync();
+                _clubRepo.Delete(club);
+                _clubRepo.SaveAll();
             }
 
             return RedirectToPage("Index");

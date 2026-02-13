@@ -8,7 +8,7 @@ using GolfStore.DataAccess.Repositorys;
 using RP1.Services;
 using Microsoft.AspNetCore.Routing.Constraints;
 
-namespace GolfStore_L00181486.Pages.Admin.Clubs
+namespace GolfStore_L00181486.Pages.Admin.Brands
 {
     [BindProperties]
     public class EditModel : PageModel
@@ -25,31 +25,17 @@ namespace GolfStore_L00181486.Pages.Admin.Clubs
         }
 
         [BindProperty]
-        public Club Club { get; set; }
-
-        public IEnumerable<SelectListItem> BrandList { get; set; }
-        public IEnumerable<SelectListItem> ClubTypeList { get; set; }
+        public Brand Brand { get; set; }
 
         // Populate select lists on GET
         public IActionResult OnGet(int id)
         {
-            Club = _unitOfWork.ClubRepo.Get(id);
+            Brand = _unitOfWork.BrandRepo.Get(id);
             
-            if (Club == null)
+            if (Brand == null)
             {
                 return NotFound();
             }
-
-            BrandList = _unitOfWork.BrandRepo.GetAll().Select(i => new SelectListItem()
-            {
-                Text = i.Name,
-                Value = i.BrandId.ToString()    
-            });
-            ClubTypeList = _unitOfWork.ClubtypeRepo.GetAll().Select(i => new SelectListItem()
-            {
-                Text = i.Type,
-                Value = i.TypeId.ToString()
-            });
             
             return Page();
         }
@@ -58,7 +44,7 @@ namespace GolfStore_L00181486.Pages.Admin.Clubs
         {
             var files = HttpContext.Request.Form.Files;
             string wwwRootFolder = _webHostEnvironment.WebRootPath;
-            var prodFromDB = _unitOfWork.ClubRepo.Get(Club.ClubId);
+            var prodFromDB = _unitOfWork.BrandRepo.Get(Brand.BrandId);
 
             if (prodFromDB == null)
             {
@@ -68,13 +54,13 @@ namespace GolfStore_L00181486.Pages.Admin.Clubs
             if (files.Count > 0)
             {
                 string new_filename = Guid.NewGuid().ToString();
-                var upload = Path.Combine(wwwRootFolder, @"Images\Clubs");
+                var upload = Path.Combine(wwwRootFolder, @"Images\Brands");
                 var extension = Path.GetExtension(files[0].FileName);
                 
                 // Delete old image file
-                if (!string.IsNullOrEmpty(prodFromDB.ImgUrl))
+                if (!string.IsNullOrEmpty(prodFromDB.LogoUrl))
                 {
-                    var oldFile = Path.Combine(wwwRootFolder, prodFromDB.ImgUrl.TrimStart('\\'));
+                    var oldFile = Path.Combine(wwwRootFolder, prodFromDB.LogoUrl.TrimStart('\\'));
                     if (System.IO.File.Exists(oldFile))
                     {
                         System.IO.File.Delete(oldFile);
@@ -86,17 +72,17 @@ namespace GolfStore_L00181486.Pages.Admin.Clubs
                     files[0].CopyTo(fileStream);
                 }
 
-                Club.ImgUrl = @"\Images\Clubs\" + new_filename + extension;
+                Brand.LogoUrl = @"\Images\Brands\" + new_filename + extension;
             }
             else
             {
                 // Keep the existing image URL if no new file is uploaded
-                Club.ImgUrl = prodFromDB.ImgUrl;
+                Brand.LogoUrl = prodFromDB.LogoUrl;
             }
             
             if (ModelState.IsValid)
             {
-                _unitOfWork.ClubRepo.Update(Club);
+                _unitOfWork.BrandRepo.Update(Brand);
                 _unitOfWork.Save();
             }
 

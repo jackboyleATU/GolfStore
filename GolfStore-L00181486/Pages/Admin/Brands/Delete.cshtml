@@ -1,0 +1,35 @@
+﻿@page
+@model GolfStore_L00181486.Pages.Admin.Brands.DeleteModel
+@{
+}
+<form method="post">
+    <input hidden asp-for="Brand.BrandId" />
+<div class="border p-3 mt-4">
+    <div class="row pb-2">
+        <h2 class="text-primary pl-3">Delete Club</h2>
+    </div>
+    <div class="row">
+        <div class="col-9">
+
+            <div class="mb-3">
+                <label asp-for="Brand.Name"></label>
+                <input disabled asp-for="Brand.Name" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Brand.Abbreviation"></label>
+                <input disabled asp-for="Brand.Abbreviation" class="form-control" />
+            </div>
+
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a asp-page="Index" class="btn btn-secondary">Back to Index</a>
+            </div>
+            <div class="col-3">
+                <img src="Brand.LogoUrl" width="100" style="border-radius:5px; border:1px solid #bbb" />
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

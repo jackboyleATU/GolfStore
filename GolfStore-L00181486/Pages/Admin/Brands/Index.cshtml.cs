@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using RP1.Services;
 
 
-namespace GolfStore_L00181486.Pages.Admin.Clubs
+namespace GolfStore_L00181486.Pages.Admin.Brands
 {
     public class IndexModel : PageModel
     {
         private readonly IUnitOfWork _unitOfWork;
-        public IEnumerable<Club> Clubs { get; set; } = Enumerable.Empty<Club>();
+        public IEnumerable<Brand> Brands { get; set; } = Enumerable.Empty<Brand>();
 
         public IndexModel(IUnitOfWork unitOfWork)
         {
@@ -20,7 +20,7 @@ namespace GolfStore_L00181486.Pages.Admin.Clubs
 
         public void OnGet()
         {
-            Clubs = _unitOfWork.ClubRepo.GetAll(includeProperties: "Brand,Clubtype");
+            Brands = _unitOfWork.BrandRepo.GetAll();
         }
     }
 }

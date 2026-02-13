@@ -8,7 +8,7 @@ using GolfStore.DataAccess.Repositorys;
 using RP1.Services;
 using Microsoft.AspNetCore.Routing.Constraints;
 
-namespace GolfStore_L00181486.Pages.Admin.Clubs
+namespace GolfStore_L00181486.Pages.Admin.Brands
 {
     [BindProperties]
     public class CreateModel : PageModel
@@ -25,35 +25,17 @@ namespace GolfStore_L00181486.Pages.Admin.Clubs
         }
 
         [BindProperty]
-        public Club Club { get; set; }
-
-        public IEnumerable<SelectListItem> BrandList { get; set; }
-        public IEnumerable<SelectListItem> ClubTypeList { get; set; }
+        public Brand Brand { get; set; }
 
         // Populate select lists on GET
         public void OnGet()
         {
-            BrandList = _unitOfWork.BrandRepo.GetAll().Select(i => new SelectListItem()
-            {
-                Text = i.Name,
-                Value = i.BrandId.ToString()
-            });
-            ClubTypeList = _unitOfWork.ClubtypeRepo.GetAll().Select(i => new SelectListItem()
-            {
-                Text = i.Type,
-                Value = i.TypeId.ToString()
-            });
+ 
         }
 
-        public IActionResult OnPost(Club club)
+        public IActionResult OnPost(Brand brand)
         {
             var files = HttpContext.Request.Form.Files;
-            if (files.Count == 0)
-            {
-                ModelState.AddModelError("Club.ImgUrl", "Please upload an image.");
-                OnGet();
-                return Page();
-            }
 
             string wwwRootFolder = _webHostEnvironment.WebRootPath;
             string new_filename = Guid.NewGuid().ToString();
@@ -66,11 +48,11 @@ namespace GolfStore_L00181486.Pages.Admin.Clubs
                 files[0].CopyTo(fileStream);
             }
 
-            Club.ImgUrl = @"\Images\Clubs\" + new_filename + extension;
+            Brand.LogoUrl = @"\Images\Brands\" + new_filename + extension;
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.ClubRepo.Add(Club);
+                _unitOfWork.BrandRepo.Add(Brand);
                 _unitOfWork.Save();
             }
 

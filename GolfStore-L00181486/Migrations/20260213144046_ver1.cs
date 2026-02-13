@@ -7,7 +7,7 @@
 namespace GolfStore_L00181486.Migrations
 {
     /// <inheritdoc />
-    public partial class intial : Migration
+    public partial class ver1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

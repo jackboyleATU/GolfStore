@@ -1,5 +1,5 @@
 ﻿@page
-@model GolfStore_L00181486.Pages.Admin.Clubs.IndexModel
+@model GolfStore_L00181486.Pages.Admin.Brands.IndexModel
 @{
 }
 
@@ -21,33 +21,25 @@
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>Brand</th>
             <th>Name</th>
-            <th>Price</th>
-            <th>Forgiveness</th>
-            <th>Stock</th>
-            <th>Club Type</th>
+            <th>Abbreviation</th>
             <th>Image</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var obj in Model.Clubs)
+        @foreach (var obj in Model.Brands)
         {
             <tr>
-                <td>@obj.Brand?.Name</td>
                 <td>@obj.Name</td>
-                <td>@obj.Price</td>
-                <td>@obj.Forgiveness</td>
-                <td>@obj.Stock</td>
-                <td>@obj.Clubtype?.Type</td>
+                <td>@obj.Abbreviation</td>
                 <td>
-                    <img src="@obj.ImgUrl" alt="@obj.Name" width="50" />
+                    <img src="@obj.LogoUrl" alt="@obj.Name" width="50" />
                 </td>
                 <td>
                     <div class="btn-group" role="group">
-                        <a asp-page="Edit" asp-route-id="@obj.ClubId" class="btn btn-primary">Edit</a>
-                        <a asp-page="Delete" asp-route-id="@obj.ClubId" class="btn btn-danger">Delete</a>
+                        <a asp-page="Edit" asp-route-id="@obj.BrandId" class="btn btn-primary">Edit</a>
+                        <a asp-page="Delete" asp-route-id="@obj.BrandId" class="btn btn-danger">Delete</a>
                     </div>
                 </td>
             </tr>

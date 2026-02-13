@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GolfStore_L00181486.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20260130133412_intial")]
-    partial class intial
+    [Migration("20260213144046_ver1")]
+    partial class ver1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

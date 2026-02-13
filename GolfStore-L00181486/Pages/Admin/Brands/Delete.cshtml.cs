@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using RP1.Services;
 using System.ComponentModel;
 
-namespace GolfStore_L00181486.Pages.Admin.Clubs
+namespace GolfStore_L00181486.Pages.Admin.Brands
 {
     [BindProperties]
     public class DeleteModel : PageModel
@@ -20,18 +20,18 @@ namespace GolfStore_L00181486.Pages.Admin.Clubs
             _unitOfWork = unitOfWork;
         }
 
-        public Club Club { get; set; }
+        public Brand Brand { get; set; }
         public void OnGet(int id)
         {
-            Club = _unitOfWork.ClubRepo.Get(id);
+            Brand = _unitOfWork.BrandRepo.Get(id);
         }
 
         public IActionResult OnPost()
         {
-            var clubFromDb = _unitOfWork.ClubRepo.Get(Club.ClubId);
-            if (clubFromDb != null)
+            var brandFromDB = _unitOfWork.BrandRepo.Get(Brand.BrandId);
+            if (brandFromDB != null)
             {
-                _unitOfWork.ClubRepo.Delete(clubFromDb);
+                _unitOfWork.BrandRepo.Delete(brandFromDB);
                 _unitOfWork.Save();
             }
 

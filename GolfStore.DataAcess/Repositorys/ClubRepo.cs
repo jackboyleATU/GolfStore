@@ -20,5 +20,19 @@ namespace GolfStore.DataAccess.Repositorys
         {
             _dbContext.SaveChanges();
         }
+
+        public void Update(Club club)
+        {
+            var prodFromDB = _dbContext.Clubs.
+                FirstOrDefault(prodFromDB => prodFromDB.ClubId == club.ClubId);
+            prodFromDB.Name = club.Name;
+            prodFromDB.BrandId = club.BrandId;
+            prodFromDB.TypeId = club.TypeId;
+
+            if (club.ImgUrl != null)
+            {
+                prodFromDB.ImgUrl = club.ImgUrl;
+            }
+        }
     }
 }

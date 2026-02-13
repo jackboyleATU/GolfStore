@@ -9,6 +9,6 @@ namespace GolfStore.DataAccess.Repositorys
 {
     public interface IClubRepo : IRepo<Club>
     {
-        void SaveAll();
+        public void Update(Club obj);
     }
 }

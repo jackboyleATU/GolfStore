@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using GolfStore.Models.Models;
 using GolfStore.DataAccess.DataAccess;
 using GolfStore.DataAccess.Repositorys;
-using RP1.Services;
+using GolfStore.Services;
 using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace GolfStore_L00181486.Pages.Admin.Brands

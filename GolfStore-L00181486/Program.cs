@@ -1,7 +1,7 @@
 using GolfStore.DataAccess.DataAccess;
 using GolfStore.DataAccess.Repositorys;
 using Microsoft.EntityFrameworkCore;
-using RP1.Services;
+using GolfStore.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

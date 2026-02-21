@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RP1.Services
+namespace GolfStore.Services
 {
     public class UnitOfWork : IUnitOfWork
     {

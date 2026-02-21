@@ -18,11 +18,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GolfStore.DataAcess\GolfStore.DataAccess.csproj" />
-    <ProjectReference Include="..\RP1.Services\RP1.Services.csproj" />
+    <ProjectReference Include="..\RP1.Services\GolfStore.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Customer\" />
     <Folder Include="wwwroot\Images\Clubs\" />
     <Folder Include="wwwroot\Images\Brands\" />
     <Folder Include="wwwroot\Images\ClubTypes\" />

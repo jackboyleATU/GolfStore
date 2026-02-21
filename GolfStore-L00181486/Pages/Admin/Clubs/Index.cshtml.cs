@@ -3,7 +3,7 @@ using GolfStore.DataAccess.Repositorys;
 using GolfStore.Models.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using RP1.Services;
+using GolfStore.Services;
 
 
 namespace GolfStore_L00181486.Pages.Admin.Clubs

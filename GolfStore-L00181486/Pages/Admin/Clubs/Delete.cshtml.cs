@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using RP1.Services;
+using GolfStore.Services;
 using System.ComponentModel;
 
 namespace GolfStore_L00181486.Pages.Admin.Clubs

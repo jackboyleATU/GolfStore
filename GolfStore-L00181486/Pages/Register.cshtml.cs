@@ -1,3 +1,4 @@
+using GolfStore.Models.Models;
 using GolfStore_L00181486.Pages.PageViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,8 @@ namespace GolfStore_L00181486.Pages
         [BindProperty]
         public Register Register { get; set; }
 
+        public ApplicationUser ApplicationUser { get; set; }
+
         public RegisterModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
@@ -27,8 +30,10 @@ namespace GolfStore_L00181486.Pages
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser()
+                var user = new ApplicationUser()
                 {
+                    FirstName = Register.FirstName, LastName = Register.LastName,
+                    PhoneNumber = Register.PhoneNumber,
                     UserName = Register.EmailAddress,
                     Email = Register.EmailAddress
                 };

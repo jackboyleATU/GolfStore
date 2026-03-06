@@ -1,5 +1,6 @@
 ﻿using GolfStore.DataAccess.DataAccess;
 using GolfStore.Models.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,12 @@ namespace GolfStore.DataAccess.Repositorys
             {
                 prodFromDB.ImgUrl = club.ImgUrl;
             }
+        }
+
+        Club IClubRepo.GetClubBrand(int id)
+        {
+            var club = _dbContext.Clubs.Include(c => c.Brand).FirstOrDefault();
+            return club;
         }
     }
 }

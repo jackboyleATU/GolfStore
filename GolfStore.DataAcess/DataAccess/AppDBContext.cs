@@ -25,5 +25,10 @@ namespace GolfStore.DataAccess.DataAccess
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Clubtype> Clubtypes { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<ShoppingCart> ShoppingCart { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
     }
 }

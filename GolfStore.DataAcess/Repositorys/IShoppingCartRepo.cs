@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace GolfStore.DataAccess.Repositorys
 {
-    public interface IClubRepo : IRepo<Club>
+    public interface IShoppingCartRepo : IRepo<ShoppingCart>
     {
-        public void Update(Club obj);
+        ShoppingCart IncrementItem(string userid, int id);
 
-        Club GetClubBrand(int id);
+        int IncrementQty(ShoppingCart shoppingCartFromDb, int qty);
     }
 }

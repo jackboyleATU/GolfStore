@@ -7,10 +7,7 @@ using System.Threading.Tasks;
 
 namespace GolfStore.DataAccess.Repositorys
 {
-    public interface IClubRepo : IRepo<Club>
+    public interface IOrderItemRepo : IRepo<OrderItem>
     {
-        public void Update(Club obj);
-
-        Club GetClubBrand(int id);
     }
 }

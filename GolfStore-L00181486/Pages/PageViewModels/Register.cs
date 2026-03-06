@@ -5,6 +5,14 @@ namespace GolfStore_L00181486.Pages.PageViewModels
     public class Register
     {
         [Required]
+        public string FirstName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
+
+        public string PhoneNumber { get; set; }
+
+        [Required]
         [DataType(DataType.EmailAddress)]
         public string EmailAddress { get; set; }
 

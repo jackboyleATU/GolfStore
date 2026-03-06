@@ -13,6 +13,11 @@ namespace GolfStore.Services
         IBrandRepo BrandRepo { get; }
         IClubtypeRepo ClubtypeRepo { get; }
 
+        IOrderRepo OrderRepo { get; }
+        IOrderItemRepo OrderItemRepo { get; }
+        IApplicationUserRepo ApplicationUserRepo { get; }
+        IShoppingCartRepo ShoppingCartRepo { get; }
+
         void Save();
     }
 }

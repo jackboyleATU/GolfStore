@@ -12,7 +12,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection"),
-        sql => sql.MigrationsAssembly("GolfStore-L00181486") // <-- set to the assembly that contains the Migrations folder
+        sql => sql.MigrationsAssembly("GolfStore.DataAccess") // <-- set to the assembly that contains the Migrations folder
     ));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDBContext>();
@@ -63,8 +63,8 @@ public static class WebApplicationExtensions
                 await roleManager.CreateAsync(new IdentityRole(role));
         }
 
-        var adminEmail = configuration["SeedAdmin:Email"] ?? "admin@gmail.ie";
-        var adminPassword = configuration["SeedAdmin:Password"] ?? "Admin123!";
+        var adminEmail = configuration["SeedAdmin:Email"] ?? "admin@gmail.com";
+        var adminPassword = configuration["SeedAdmin:Password"] ?? "Admin1!";
 
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
 

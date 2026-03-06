@@ -3,62 +3,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace GolfStore_L00181486.Migrations
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
+namespace GolfStore.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class users : Migration
+    public partial class ShoppingCart : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Clubs_Brands_BrandId",
-                table: "Clubs");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Clubs_Clubtypes_TypeId",
-                table: "Clubs");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "TypeId",
-                table: "Clubs",
-                type: "int",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "Stock",
-                table: "Clubs",
-                type: "int",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "Price",
-                table: "Clubs",
-                type: "int",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "Forgiveness",
-                table: "Clubs",
-                type: "int",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "BrandId",
-                table: "Clubs",
-                type: "int",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -78,6 +32,9 @@ namespace GolfStore_L00181486.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -96,6 +53,35 @@ namespace GolfStore_L00181486.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Brands",
+                columns: table => new
+                {
+                    BrandId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Abbreviation = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LogoUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Brands", x => x.BrandId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Clubtypes",
+                columns: table => new
+                {
+                    TypeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clubtypes", x => x.TypeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -204,47 +190,138 @@ namespace GolfStore_L00181486.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.UpdateData(
-                table: "Brands",
-                keyColumn: "BrandId",
-                keyValue: 1,
-                column: "LogoUrl",
-                value: "/images/brands/callaway-logo.png");
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DateOfOrder = table.Column<DateTime>(type: "Date", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TotalAmtDue = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Orders_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
-            migrationBuilder.UpdateData(
-                table: "Brands",
-                keyColumn: "BrandId",
-                keyValue: 2,
-                column: "LogoUrl",
-                value: "/images/brands/taylormade-logo.png");
+            migrationBuilder.CreateTable(
+                name: "Clubs",
+                columns: table => new
+                {
+                    ClubId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Forgiveness = table.Column<int>(type: "int", nullable: true),
+                    Price = table.Column<int>(type: "int", nullable: true),
+                    Stock = table.Column<int>(type: "int", nullable: true),
+                    ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TypeId = table.Column<int>(type: "int", nullable: true),
+                    BrandId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clubs", x => x.ClubId);
+                    table.ForeignKey(
+                        name: "FK_Clubs_Brands_BrandId",
+                        column: x => x.BrandId,
+                        principalTable: "Brands",
+                        principalColumn: "BrandId");
+                    table.ForeignKey(
+                        name: "FK_Clubs_Clubtypes_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "Clubtypes",
+                        principalColumn: "TypeId");
+                });
 
-            migrationBuilder.UpdateData(
-                table: "Brands",
-                keyColumn: "BrandId",
-                keyValue: 3,
-                column: "LogoUrl",
-                value: "/images/brands/titleist-logo.png");
+            migrationBuilder.CreateTable(
+                name: "OrderItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClubId = table.Column<int>(type: "int", nullable: false),
+                    QtyOrdered = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Clubs_ClubId",
+                        column: x => x.ClubId,
+                        principalTable: "Clubs",
+                        principalColumn: "ClubId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
-            migrationBuilder.UpdateData(
-                table: "Brands",
-                keyColumn: "BrandId",
-                keyValue: 4,
-                column: "LogoUrl",
-                value: "/images/brands/ping-logo.png");
+            migrationBuilder.CreateTable(
+                name: "ShoppingCart",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClubId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    CartTotal = table.Column<float>(type: "real", nullable: false),
+                    ApplicationUserID = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCart", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCart_AspNetUsers_ApplicationUserID",
+                        column: x => x.ApplicationUserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCart_Clubs_ClubId",
+                        column: x => x.ClubId,
+                        principalTable: "Clubs",
+                        principalColumn: "ClubId",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
-            migrationBuilder.UpdateData(
+            migrationBuilder.InsertData(
                 table: "Brands",
-                keyColumn: "BrandId",
-                keyValue: 5,
-                column: "LogoUrl",
-                value: "/images/brands/cobra-logo.png");
+                columns: new[] { "BrandId", "Abbreviation", "LogoUrl", "Name" },
+                values: new object[,]
+                {
+                    { 1, "CAL", "/images/brands/callaway-logo.png", "Callaway" },
+                    { 2, "TAY", "/images/brands/taylormade-logo.png", "TaylorMade" },
+                    { 3, "TIT", "/images/brands/titleist-logo.png", "Titleist" },
+                    { 4, "PIN", "/images/brands/ping-logo.png", "Ping" },
+                    { 5, "COB", "/images/brands/cobra-logo.png", "Cobra" },
+                    { 6, "MIZ", "/images/brands/mizuno-logo.png", "Mizuno" }
+                });
 
-            migrationBuilder.UpdateData(
-                table: "Brands",
-                keyColumn: "BrandId",
-                keyValue: 6,
-                column: "LogoUrl",
-                value: "/images/brands/mizuno-logo.png");
+            migrationBuilder.InsertData(
+                table: "Clubtypes",
+                columns: new[] { "TypeId", "ImgUrl", "Type" },
+                values: new object[,]
+                {
+                    { 1, "/images/driver.png", "Driver" },
+                    { 2, "/images/fairwayWood.png", "Fairway Wood" },
+                    { 3, "/images/hybrid.png", "Hybrid" },
+                    { 4, "/images/iron.png", "Iron" },
+                    { 5, "/images/wedge.png", "Wedge" },
+                    { 6, "/images/putter.png", "Putter" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -285,32 +362,45 @@ namespace GolfStore_L00181486.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Clubs_Brands_BrandId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Clubs_BrandId",
                 table: "Clubs",
-                column: "BrandId",
-                principalTable: "Brands",
-                principalColumn: "BrandId");
+                column: "BrandId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Clubs_Clubtypes_TypeId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Clubs_TypeId",
                 table: "Clubs",
-                column: "TypeId",
-                principalTable: "Clubtypes",
-                principalColumn: "TypeId");
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_ClubId",
+                table: "OrderItems",
+                column: "ClubId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_OrderId",
+                table: "OrderItems",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_UserId",
+                table: "Orders",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCart_ApplicationUserID",
+                table: "ShoppingCart",
+                column: "ApplicationUserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCart_ClubId",
+                table: "ShoppingCart",
+                column: "ClubId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Clubs_Brands_BrandId",
-                table: "Clubs");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Clubs_Clubtypes_TypeId",
-                table: "Clubs");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -327,118 +417,28 @@ namespace GolfStore_L00181486.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "OrderItems");
+
+            migrationBuilder.DropTable(
+                name: "ShoppingCart");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Clubs");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
-            migrationBuilder.AlterColumn<int>(
-                name: "TypeId",
-                table: "Clubs",
-                type: "int",
-                nullable: false,
-                defaultValue: 0,
-                oldClrType: typeof(int),
-                oldType: "int",
-                oldNullable: true);
+            migrationBuilder.DropTable(
+                name: "Brands");
 
-            migrationBuilder.AlterColumn<int>(
-                name: "Stock",
-                table: "Clubs",
-                type: "int",
-                nullable: false,
-                defaultValue: 0,
-                oldClrType: typeof(int),
-                oldType: "int",
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<int>(
-                name: "Price",
-                table: "Clubs",
-                type: "int",
-                nullable: false,
-                defaultValue: 0,
-                oldClrType: typeof(int),
-                oldType: "int",
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<int>(
-                name: "Forgiveness",
-                table: "Clubs",
-                type: "int",
-                nullable: false,
-                defaultValue: 0,
-                oldClrType: typeof(int),
-                oldType: "int",
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<int>(
-                name: "BrandId",
-                table: "Clubs",
-                type: "int",
-                nullable: false,
-                defaultValue: 0,
-                oldClrType: typeof(int),
-                oldType: "int",
-                oldNullable: true);
-
-            migrationBuilder.UpdateData(
-                table: "Brands",
-                keyColumn: "BrandId",
-                keyValue: 1,
-                column: "LogoUrl",
-                value: "https://upload.wikimedia.org/wikipedia/commons/8/89/Callaway_Golf_Company_logo.svg");
-
-            migrationBuilder.UpdateData(
-                table: "Brands",
-                keyColumn: "BrandId",
-                keyValue: 2,
-                column: "LogoUrl",
-                value: "https://upload.wikimedia.org/wikipedia/en/1/1f/Taylormade_logo.png");
-
-            migrationBuilder.UpdateData(
-                table: "Brands",
-                keyColumn: "BrandId",
-                keyValue: 3,
-                column: "LogoUrl",
-                value: "https://upload.wikimedia.org/wikipedia/commons/d/d6/Titleist_golf_logo.png");
-
-            migrationBuilder.UpdateData(
-                table: "Brands",
-                keyColumn: "BrandId",
-                keyValue: 4,
-                column: "LogoUrl",
-                value: "https://upload.wikimedia.org/wikipedia/commons/3/37/Ping-logo.png");
-
-            migrationBuilder.UpdateData(
-                table: "Brands",
-                keyColumn: "BrandId",
-                keyValue: 5,
-                column: "LogoUrl",
-                value: "https://www.cobragolf.com/cdn/shop/files/COBRA-logo-2022-black-shopify-checkout_1724x.png?v=1689363641");
-
-            migrationBuilder.UpdateData(
-                table: "Brands",
-                keyColumn: "BrandId",
-                keyValue: 6,
-                column: "LogoUrl",
-                value: "https://upload.wikimedia.org/wikipedia/commons/3/34/Mizuno_logo.jpg");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Clubs_Brands_BrandId",
-                table: "Clubs",
-                column: "BrandId",
-                principalTable: "Brands",
-                principalColumn: "BrandId",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Clubs_Clubtypes_TypeId",
-                table: "Clubs",
-                column: "TypeId",
-                principalTable: "Clubtypes",
-                principalColumn: "TypeId",
-                onDelete: ReferentialAction.Cascade);
+            migrationBuilder.DropTable(
+                name: "Clubtypes");
         }
     }
 }

@@ -1,8 +1,10 @@
 using GolfStore.DataAccess.DataAccess;
 using GolfStore.DataAccess.Repositorys;
-using Microsoft.EntityFrameworkCore;
 using GolfStore.Services;
+using GolfStore_L00181486.Pages.PageViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,9 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDBContext>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -39,6 +44,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+string key = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
+StripeConfiguration.ApiKey = key;
 await app.CreateRolesAsync(builder.Configuration);
 app.UseAuthentication();
 

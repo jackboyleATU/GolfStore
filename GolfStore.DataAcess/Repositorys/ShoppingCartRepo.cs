@@ -1,5 +1,6 @@
 ﻿using GolfStore.DataAccess.DataAccess;
 using GolfStore.Models.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,25 @@ namespace GolfStore.DataAccess.Repositorys
             shoppingCartFromDb.Quantity += qty;
             _dbContext.SaveChanges();
             return shoppingCartFromDb.Quantity;
+        }
+
+        public IEnumerable<ShoppingCart> GetShoppingCartProduct(string userid)
+        {
+            var ShoppingCartItem = _dbContext.ShoppingCart.Where(u => u.ApplicationUserID == userid).Include(p => p.Club).ThenInclude(c => c.Brand);
+            return ShoppingCartItem;
+        }
+
+        public void RemoveAll(IEnumerable<ShoppingCart> items)
+        {
+            _dbContext.RemoveRange(items);
+            _dbContext.SaveChanges();
+        }
+
+        public int DecrementQty(ShoppingCart shoppingCart, int qty)
+        {
+            shoppingCart.Quantity -= qty;
+            _dbContext.SaveChanges();
+            return shoppingCart.Quantity;
         }
     }
 }

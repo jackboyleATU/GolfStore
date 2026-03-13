@@ -1,11 +1,6 @@
 ﻿using GolfStore.DataAccess.DataAccess;
 using GolfStore.Models.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GolfStore.DataAccess.Repositorys
 {
@@ -24,8 +19,9 @@ namespace GolfStore.DataAccess.Repositorys
 
         public void Update(Club club)
         {
-            var prodFromDB = _dbContext.Clubs.
-                FirstOrDefault(prodFromDB => prodFromDB.ClubId == club.ClubId);
+            var prodFromDB = _dbContext.Clubs
+                .FirstOrDefault(prodFromDB => prodFromDB.ClubId == club.ClubId);
+
             prodFromDB.Name = club.Name;
             prodFromDB.BrandId = club.BrandId;
             prodFromDB.TypeId = club.TypeId;
@@ -38,7 +34,10 @@ namespace GolfStore.DataAccess.Repositorys
 
         Club IClubRepo.GetClubBrand(int id)
         {
-            var club = _dbContext.Clubs.Include(c => c.Brand).FirstOrDefault();
+            var club = _dbContext.Clubs
+                .Include(c => c.Brand)
+                .FirstOrDefault(c => c.ClubId == id);
+
             return club;
         }
     }

@@ -12,5 +12,11 @@ namespace GolfStore.DataAccess.Repositorys
         ShoppingCart IncrementItem(string userid, int id);
 
         int IncrementQty(ShoppingCart shoppingCartFromDb, int qty);
+
+        IEnumerable<ShoppingCart> GetShoppingCartProduct(string userid);
+
+        void RemoveAll(IEnumerable<ShoppingCart> items);
+
+        int DecrementQty(ShoppingCart shoppingCart, int qty);
     }
 }

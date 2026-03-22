@@ -23,11 +23,15 @@ namespace GolfStore_L00181486.Pages.Customer.Home
 
         public void OnGet()
         {
-            listOfClubs = _unitOfWork.ClubRepo.GetAll();
+            listOfClubs = _unitOfWork.ClubRepo.GetAll("Clubtype,Brand");
             listOfBrands = _unitOfWork.BrandRepo.GetAll();
             if (!string.IsNullOrEmpty(SearchString))
             {
-                listOfClubs = listOfClubs.Where(p => p.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase));
+                listOfClubs = listOfClubs.Where(p =>
+                    p.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase) ||
+                    p.Brand.Name.Contains(SearchString, StringComparison.OrdinalIgnoreCase) ||
+                    (p.Clubtype != null && p.Clubtype.Type.Contains(SearchString, StringComparison.OrdinalIgnoreCase))
+                ).ToList();
             }
         }
     }
